@@ -1,4 +1,4 @@
-﻿import { biens, locataires, loyers } from "../data/mockData";
+import { biens, locataires, loyers } from "../data/mockData";
 
 export default function Dashboard() {
   const nbBiens = biens.length;

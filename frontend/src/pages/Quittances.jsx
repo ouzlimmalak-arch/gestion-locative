@@ -1,37 +1,64 @@
-﻿import { loyers, locataires, biens } from "../data/mockData";
+function Quittances({ loyers, role, utilisateurConnecte }) {
+  const loyersAffiches =
+    role === "Locataire"
+      ? loyers.filter(
+          (loyer) => loyer.locataire === utilisateurConnecte.nom
+        )
+      : loyers;
 
-export default function Quittances() {
-  const loyersPayes = loyers.filter((loyer) => loyer.paye);
+  const quittances = loyersAffiches.filter(
+    (loyer) => loyer.paye === true
+  );
+  const supprimerQuittance = (id) => {
+    const confirmation = window.confirm(
+      "Voulez-vous vraiment supprimer cette quittance ?",
+    );
+
+    if (confirmation) {
+      alert(
+        "Pour supprimer cette quittance, il faut supprimer le loyer correspondant.",
+      );
+    }
+  };
 
   return (
     <div>
-      <h1>Quittances</h1>
-      <table border="1" cellPadding="8">
+      <h1>Gestion des quittances</h1>
+      <table className="table-quittances">
         <thead>
           <tr>
-            <th>N°</th>
+            <th>N° Quittance</th>
             <th>Locataire</th>
             <th>Bien</th>
             <th>Mois</th>
-            <th>Montant (MAD)</th>
+            <th>Montant (DH)</th>
+            {role === "Gestionnaire" && <th>Actions</th>}
           </tr>
         </thead>
+
         <tbody>
-          {loyersPayes.map((loyer) => {
-            const locataire = locataires.find((l) => l.id === loyer.locataireId);
-            const bien = biens.find((b) => b.id === locataire.bienId);
-            return (
-              <tr key={loyer.id}>
-                <td>Q-{loyer.id}</td>
-                <td>{locataire.nom}</td>
-                <td>{bien.adresse}</td>
-                <td>{loyer.mois}</td>
-                <td>{loyer.montant}</td>
-              </tr>
-            );
-          })}
+          {quittances.map((quittance) => (
+            <tr key={quittance.idQuittance}>
+              <td>Q-{quittance.idLoyer}</td>
+              <td>{quittance.locataire}</td>
+              <td>{quittance.bien}</td>
+              <td>{quittance.mois}</td>
+              <td>{quittance.montant}</td>
+              {role === "Gestionnaire" && (
+  <td>
+    <button
+      onClick={() => supprimerQuittance(quittance.idQuittance)}
+    >
+      Supprimer
+    </button>
+  </td>
+)}
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>
   );
 }
+
+export default Quittances;

@@ -1,30 +1,120 @@
-﻿import { locataires, biens } from "../data/mockData";
+import { useState } from "react";
 
-export default function Locataires() {
+function Locataires() {
+  const [locataires, setLocataires] = useState([
+    {
+      idLocataire: 1,
+      nom: "Alami",
+      prenom: "Alaa",
+      telephone: "0612023456",
+    },
+    {
+      idLocataire: 2,
+      nom: "Bennani",
+      prenom: "Youssef",
+      telephone: "0623876543",
+    },
+    {
+      idLocataire: 3,
+      nom: "Idrissi",
+      prenom: "Amine",
+      telephone: "0698765432",
+    },
+  ]);
+  const [nom, setNom] = useState("");
+  const [prenom, setPrenom] = useState("");
+  const [telephone, setTelephone] = useState("");
+  const [idModification, setIdModification] = useState(null);
+  function ajouterLocataire(locataire) {
+    if (idModification === null) {
+      const nouveauLocataire = {
+        idLocataire: locataires.length + 1,
+        nom: nom,
+        prenom: prenom,
+        telephone: telephone,
+      };
+
+      setLocataires([...locataires, nouveauLocataire]);
+    } else {
+      const nouveauxLocataires = locataires.map((locataire) => {
+        if (locataire.idLocataire === idModification) {
+          return {
+            ...locataire,
+            nom: nom,
+            prenom: prenom,
+            telephone: telephone,
+          };
+        }
+
+        return locataire;
+      });
+
+      setLocataires(nouveauxLocataires);
+      setIdModification(null);
+    }
+
+    setNom("");
+    setPrenom("");
+    setTelephone("");
+  }
+  function modifierLocataire(locataire) {
+    setIdModification(locataire.idLocataire);
+
+    setNom(locataire.nom);
+    setPrenom(locataire.prenom);
+    setTelephone(locataire.telephone);
+  }
+  function supprimerLocataire(id) {
+    const nouveauxLocataires = locataires.filter((locataire) => {
+      return locataire.idLocataire !== id;
+    });
+
+    setLocataires(nouveauxLocataires);
+  }
   return (
     <div>
-      <h1>Locataires</h1>
-      <table border="1" cellPadding="8">
-        <thead>
-          <tr>
-            <th>Nom</th>
-            <th>Téléphone</th>
-            <th>Bien loué</th>
-          </tr>
-        </thead>
-        <tbody>
-          {locataires.map((l) => {
-            const bien = biens.find((b) => b.id === l.bienId);
-            return (
-              <tr key={l.id}>
-                <td>{l.nom}</td>
-                <td>{l.telephone}</td>
-                <td>{bien.adresse}</td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+      <h1>Gestion des locataires</h1>
+      <input
+        type="text"
+        placeholder="Nom"
+        value={nom}
+        onChange={(e) => setNom(e.target.value)}
+      />
+
+      <input
+        type="text"
+        placeholder="Prénom"
+        value={prenom}
+        onChange={(e) => setPrenom(e.target.value)}
+      />
+
+      <input
+        type="text"
+        placeholder="Téléphone"
+        value={telephone}
+        onChange={(e) => setTelephone(e.target.value)}
+      />
+
+      <button onClick={ajouterLocataire}>Ajouter</button>
+      <ul className="liste-locataires">
+        {locataires.map((locataire) => (
+          <li key={locataire.idLocataire} className="locataire-item">
+            <span>
+              {locataire.nom} {locataire.prenom} - {locataire.telephone}
+            </span>
+
+            <button onClick={() => modifierLocataire(locataire)}>
+              Modifier
+            </button>
+
+            <button onClick={() => supprimerLocataire(locataire.idLocataire)}>
+              Supprimer
+            </button>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
+
+export default Locataires;

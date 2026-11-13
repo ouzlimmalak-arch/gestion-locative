@@ -1,38 +1,382 @@
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #FAF7F3;
+    color: #3E302A;
+}
+nav {
+    background-color: #6F5144;
+    padding: 22px 30px;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+/*style des liens*/
+nav a {
+    color: #FFFFFF;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
+}
+/*Lorsque tu passes la souris sur un lien, sa couleur devient nude*/
+nav a:hover {
+    color: #DCC8B8;
+}
+/*style des titres*/
+h1 {
+    color: #6F5144;
+    margin: 30px;
+    font-size: 30px;
+}
+/*style des listes*/
+ul {
+    margin: 30px;
+    font-size: 18px;
+    line-height: 2;
+}
 .App {
+    min-height: 100vh;
+}
+/* Liste des biens */
+.liste-biens {
+    list-style: none;
+    padding: 0;
+    margin: 30px;
+}
+
+/* Chaque bien */
+.bien-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    font-size: 18px;
+}
+
+/* Texte du bien */
+.bien-item span {
+    min-width: 350px;
+}
+
+/* Boutons */
+.bien-item button {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: #B89B88;
+    color: white;
+    cursor: pointer;
+}
+
+.bien-item button:hover {
+    background-color: #6F5144;
+}
+/* Liste des locataires */
+.liste-locataires {
+    list-style: none;
+    padding: 0;
+    margin: 30px;
+}
+
+/* Chaque locataire */
+.locataire-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    font-size: 18px;
+}
+
+/* Texte du locataire */
+.locataire-item span {
+    min-width: 350px;
+}
+
+/* Boutons */
+.locataire-item button {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: #B89B88;
+    color: white;
+    cursor: pointer;
+}
+
+.locataire-item button:hover {
+    background-color: #6F5144;
+}
+.formulaire-bail {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin: 20px 35px;
+    max-width: 900px;
+}
+
+.formulaire-bail input {
+    padding: 12px;
+    border: 1px solid #B89B88;
+    border-radius: 6px;
+    font-size: 15px;
+}
+
+.formulaire-bail button {
+    padding: 12px 20px;
+    background-color: #B89B88;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.formulaire-bail button:hover {
+    background-color: #6F5144;
+}
+.actions-bail {
+    display: flex;
+    gap: 10px;
+    margin-top: 12px;
+}
+
+.actions-bail button {
+    padding: 9px 18px;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-modifier,
+.btn-supprimer {
+    background-color: #B89B88;
+    color: white;
+}
+
+.btn-modifier:hover,
+.btn-supprimer:hover {
+    background-color: #6F5144;
+}
+.formulaire-loyer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin: 20px 35px 35px;
+    max-width: 900px;
+}
+
+.formulaire-loyer input,
+.formulaire-loyer select {
+    padding: 12px;
+    border: 1px solid #B89B88;
+    border-radius: 6px;
+    font-size: 15px;
+}
+
+.formulaire-loyer button {
+    padding: 12px 20px;
+    background-color: #B89B88;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.formulaire-loyer button:hover {
+    background-color: #6F5144;
+}
+.table-loyers {
+    width: 90%;
+    max-width: 950px;
+    margin: 25px 35px;
+    border-collapse: collapse;
+    background-color: #FAF7F3;
+}
+
+.table-loyers th {
+    background-color: #E8D5CA;
+    color: #3E302A;
+    padding: 14px;
+    text-align: left;
+}
+
+.table-loyers td {
+    padding: 14px;
+    border-bottom: 1px solid #DCC8B8;
+}
+
+.actions-loyer {
+    display: flex;
+    gap: 10px;
+}
+
+.actions-loyer button {
+    padding: 9px 15px;
+    border: none;
+    border-radius: 6px;
+    background-color: #B89B88;
+    color: white;
+    cursor: pointer;
+}
+
+.actions-loyer button:hover {
+    background-color: #6F5144;
+}
+
+.statut-paye {
+    color: green;
+    font-weight: bold;
+}
+
+.statut-impaye {
+    color: red;
+    font-weight: bold;
+}
+.table-loyers {
+    table-layout: auto;
+}
+
+.table-loyers th,
+.table-loyers td {
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+.table-loyers th {
+    text-align: left;
+}
+
+.actions-loyer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.actions-loyer button {
+    min-width: 95px;
+}
+.table-quittances {
+    width: 90%;
+    max-width: 950px;
+    margin: 25px 35px;
+    border-collapse: collapse;
+    background-color: #FAF7F3;
+}
+
+.table-quittances th {
+    background-color: #E8D5CA;
+    color: #3E302A;
+    padding: 14px;
+    text-align: left;
+}
+
+.table-quittances td {
+    padding: 14px;
+    border-bottom: 1px solid #DCC8B8;
+}
+
+.table-quittances th,
+.table-quittances td {
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+.table-quittances button {
+    padding: 9px 15px;
+    border: none;
+    border-radius: 6px;
+    background-color: #B89B88;
+    color: white;
+    cursor: pointer;
+}
+
+.table-quittances button:hover {
+    background-color: #6F5144;
+}
+
+/* PAGE CONNEXION ET INSCRIPTION */
+
+.page-connexion {
+  max-width: 450px;
+  margin: 60px auto;
+  padding: 35px;
+  background-color: #FAF7F3;
+  border-radius: 12px;
+  box-shadow: 0 3px 12px rgba(62, 48, 42, 0.12);
+}
+
+.page-connexion h2 {
   text-align: center;
+  color: #6F5144;
+  margin-bottom: 25px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.page-connexion h3 {
+  color: #6F5144;
+  text-align: center;
+  margin-bottom: 20px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.page-connexion label {
+  display: block;
+  margin: 15px 0 7px;
+  color: #3E302A;
+  font-weight: 600;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+.page-connexion input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #DCC8B8;
+  border-radius: 7px;
+  background-color: white;
+  font-size: 15px;
+  box-sizing: border-box;
+}
+
+.page-connexion input:focus {
+  outline: none;
+  border-color: #6F5144;
+}
+
+.page-connexion button {
+  background-color: #B89B88;
   color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 15px;
+  margin-top: 15px;
+  transition: 0.3s;
 }
 
-.App-link {
-  color: #61dafb;
+.page-connexion button:hover {
+  background-color: #6F5144;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.page-connexion form button {
+  width: 100%;
+}
+
+.page-connexion > div {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.btn-deconnexion {
+  background-color: #b99b88;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.btn-deconnexion:hover {
+  background-color: #a88976;
 }
