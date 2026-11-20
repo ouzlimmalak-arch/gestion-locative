@@ -1,5 +1,6 @@
 
 import React, { useState } from "react";
+import Logo from "../components/Logo";
 
 function Connexion({ onConnexion }) {
   const [mode, setMode] = useState("connexion");
@@ -19,6 +20,7 @@ function Connexion({ onConnexion }) {
 
   const [utilisateurInscrit, setUtilisateurInscrit] = useState(null);
 
+  // Modifier les champs de connexion
   const handleChange = (e) => {
     setForm({
       ...form,
@@ -26,6 +28,7 @@ function Connexion({ onConnexion }) {
     });
   };
 
+  // Modifier les champs d'inscription
   const handleInscriptionChange = (e) => {
     setInscription({
       ...inscription,
@@ -33,25 +36,27 @@ function Connexion({ onConnexion }) {
     });
   };
 
+  // Connexion
   const handleConnexion = (e) => {
     e.preventDefault();
 
-if (
-  form.email === "gestionnaire@gmail.com" &&
-  form.motDePasse === "1234"
-) {
-  onConnexion("Gestionnaire");
-} else if (
-  utilisateurInscrit &&
-  form.email === utilisateurInscrit.email &&
-  form.motDePasse === utilisateurInscrit.motDePasse
-) {
-  onConnexion(utilisateurInscrit.role, utilisateurInscrit);
-} else {
-  alert("Email ou mot de passe incorrect !");
-}
+    if (
+      form.email === "gestionnaire@gmail.com" &&
+      form.motDePasse === "1234"
+    ) {
+      onConnexion("Gestionnaire");
+    } else if (
+      utilisateurInscrit &&
+      form.email === utilisateurInscrit.email &&
+      form.motDePasse === utilisateurInscrit.motDePasse
+    ) {
+      onConnexion(utilisateurInscrit.role, utilisateurInscrit);
+    } else {
+      alert("Email ou mot de passe incorrect !");
+    }
   };
 
+  // Inscription
   const handleInscription = (e) => {
     e.preventDefault();
 
@@ -64,7 +69,7 @@ if (
       nom: inscription.nom,
       email: inscription.email,
       motDePasse: inscription.motDePasse,
-       role: inscription.role,
+      role: inscription.role,
     });
 
     setForm({
@@ -73,105 +78,209 @@ if (
     });
 
     setMode("connexion");
+
     alert("Inscription réussie ! Vous pouvez vous connecter.");
   };
 
   return (
-    <div className="page-connexion">
-      <h2>Gestion locative</h2>
+    <div className="auth">
 
-      <div>
-        <button onClick={() => setMode("connexion")}>
-          Se connecter
-        </button>
+      {/* Partie gauche */}
+      <aside className="auth-brand">
+        <div className="brand-content">
+          <span className="brand-label">
+            VOTRE ESPACE IMMOBILIER
+          </span>
 
-        <button onClick={() => setMode("inscription")}>
-          S'inscrire
-        </button>
-      </div>
+          <h1>
+            Gérez vos locations
+            <br />
+            en toute simplicité.
+          </h1>
 
-      {mode === "connexion" ? (
-        <form onSubmit={handleConnexion}>
-          <h3>Connexion</h3>
+          <p className="brand-description">
+            Une plateforme simple et pratique pour organiser
+            vos biens, vos locataires et vos locations au même endroit.
+          </p>
 
-          <label>Email :</label>
-          <input
-            type="email"
-            name="email"
-            value={form.email}
-            onChange={handleChange}
-            placeholder="Entrez votre email"
-            required
-          />
+          <div className="brand-features">
+            <div className="brand-feature">
+              <span className="feature-icon">⌂</span>
+              <span>Gestion des biens immobiliers</span>
+            </div>
 
-          <label>Mot de passe :</label>
-          <input
-            type="password"
-            name="motDePasse"
-            value={form.motDePasse}
-            onChange={handleChange}
-            placeholder="Entrez votre mot de passe"
-            required
-          />
+            <div className="brand-feature">
+              <span className="feature-icon">✓</span>
+              <span>Suivi des loyers et des paiements</span>
+            </div>
 
-          <button type="submit">Se connecter</button>
-        </form>
-      ) : (
-        <form onSubmit={handleInscription}>
-          <h3>Créer un compte</h3>
+            <div className="brand-feature">
+              <span className="feature-icon">▤</span>
+              <span>Organisation des quittances</span>
+            </div>
+          </div>
+        </div>
 
-          <label>Nom complet :</label>
-          <input
-            type="text"
-            name="nom"
-            value={inscription.nom}
-            onChange={handleInscriptionChange}
-            placeholder="Entrez votre nom"
-            required
-          />
-          <label>Type de compte :</label>
-           <select
-            name="role"
-            value={inscription.role}
-            onChange={handleInscriptionChange}
-           >
-           <option value="Locataire">Locataire</option>
-           <option value="Gestionnaire">Gestionnaire</option>
-          </select>
+        <div className="brand-decoration">
+          <span>GESTION LOCATIVE</span>
+          <span>Un espace, une gestion simplifiée.</span>
+        </div>
+      </aside>
 
-          <label>Email :</label>
-          <input
-            type="email"
-            name="email"
-            value={inscription.email}
-            onChange={handleInscriptionChange}
-            placeholder="Entrez votre email"
-            required
-          />
+      {/* Partie droite */}
+      <main className="auth-panel">
+        <div className="auth-form">
 
-          <label>Mot de passe :</label>
-          <input
-            type="password"
-            name="motDePasse"
-            value={inscription.motDePasse}
-            onChange={handleInscriptionChange}
-            placeholder="Créer un mot de passe"
-            required
-          />
+          {/* Logo */}
+          <div className="auth-logo">
+            <Logo />
+          </div>
 
-          <label>Confirmer le mot de passe :</label>
-          <input
-            type="password"
-            name="confirmation"
-            value={inscription.confirmation}
-            onChange={handleInscriptionChange}
-            placeholder="Confirmer le mot de passe"
-            required
-          />
+          {/* Choix connexion ou inscription */}
+          <div className="tabs">
+            <button
+              type="button"
+              className={mode === "connexion" ? "on" : ""}
+              onClick={() => setMode("connexion")}
+            >
+              Se connecter
+            </button>
 
-          <button type="submit">S'inscrire</button>
-        </form>
-      )}
+            <button
+              type="button"
+              className={mode === "inscription" ? "on" : ""}
+              onClick={() => setMode("inscription")}
+            >
+              S'inscrire
+            </button>
+          </div>
+
+          {/* Formulaire de connexion */}
+          {mode === "connexion" ? (
+            <form onSubmit={handleConnexion}>
+              <h2>Connexion</h2>
+
+              <p className="hint">
+                Accédez à votre espace.
+              </p>
+
+              <div className="field">
+                <label htmlFor="email">Email :</label>
+                <input
+                  id="email"
+                  type="email"
+                  name="email"
+                  value={form.email}
+                  onChange={handleChange}
+                  placeholder="Entrez votre email"
+                  required
+                />
+              </div>
+
+              <div className="field">
+                <label htmlFor="motDePasse">Mot de passe :</label>
+                <input
+                  id="motDePasse"
+                  type="password"
+                  name="motDePasse"
+                  value={form.motDePasse}
+                  onChange={handleChange}
+                  placeholder="Entrez votre mot de passe"
+                  required
+                />
+              </div>
+
+              <button type="submit" className="submit">
+                Se connecter
+              </button>
+            </form>
+          ) : (
+
+            /* Formulaire d'inscription */
+            <form onSubmit={handleInscription}>
+              <h2>Créer un compte</h2>
+
+              <p className="hint">
+                Quelques informations suffisent.
+              </p>
+
+              <div className="field">
+                <label htmlFor="nom">Nom complet :</label>
+                <input
+                  id="nom"
+                  type="text"
+                  name="nom"
+                  value={inscription.nom}
+                  onChange={handleInscriptionChange}
+                  placeholder="Entrez votre nom"
+                  required
+                />
+              </div>
+
+              <div className="field">
+                <label htmlFor="role">Type de compte :</label>
+                <select
+                  id="role"
+                  name="role"
+                  value={inscription.role}
+                  onChange={handleInscriptionChange}
+                >
+                  <option value="Locataire">Locataire</option>
+                  <option value="Gestionnaire">Gestionnaire</option>
+                </select>
+              </div>
+
+              <div className="field">
+                <label htmlFor="emailInscription">Email :</label>
+                <input
+                  id="emailInscription"
+                  type="email"
+                  name="email"
+                  value={inscription.email}
+                  onChange={handleInscriptionChange}
+                  placeholder="Entrez votre email"
+                  required
+                />
+              </div>
+
+              <div className="field">
+                <label htmlFor="motDePasseInscription">
+                  Mot de passe :
+                </label>
+                <input
+                  id="motDePasseInscription"
+                  type="password"
+                  name="motDePasse"
+                  value={inscription.motDePasse}
+                  onChange={handleInscriptionChange}
+                  placeholder="Créer un mot de passe"
+                  required
+                />
+              </div>
+
+              <div className="field">
+                <label htmlFor="confirmation">
+                  Confirmer le mot de passe :
+                </label>
+                <input
+                  id="confirmation"
+                  type="password"
+                  name="confirmation"
+                  value={inscription.confirmation}
+                  onChange={handleInscriptionChange}
+                  placeholder="Confirmer le mot de passe"
+                  required
+                />
+              </div>
+
+              <button type="submit" className="submit">
+                S'inscrire
+              </button>
+            </form>
+          )}
+
+        </div>
+      </main>
     </div>
   );
 }

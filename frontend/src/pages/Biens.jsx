@@ -1,4 +1,5 @@
 import { useState } from "react";
+
 function Biens() {
   const [biens, setBiens] = useState([
     {
@@ -20,6 +21,7 @@ function Biens() {
   const [adresse, setAdresse] = useState("");
   const [type, setType] = useState("");
   const [idModification, setIdModification] = useState(null);
+
   function ajouterBien() {
     if (adresse === "" || type === "") {
       alert("Veuillez remplir tous les champs !");
@@ -54,11 +56,13 @@ function Biens() {
     setAdresse("");
     setType("");
   }
+
   function modifierBien(bien) {
     setIdModification(bien.idBien);
     setAdresse(bien.adresse);
     setType(bien.type);
   }
+
   function supprimerBien(id) {
     const nouveauxBiens = biens.filter((bien) => {
       return bien.idBien !== id;
@@ -66,39 +70,64 @@ function Biens() {
 
     setBiens(nouveauxBiens);
   }
+
   return (
     <div>
-      <h1>Gestion des biens</h1>
-      <input
-        type="text"
-        placeholder="Adresse du bien"
-        value={adresse}
-        onChange={(e) => setAdresse(e.target.value)}
-      />
+      <header className="page-head">
+        <h1>Gestion des biens</h1>
+        <p>Les logements de votre parc locatif.</p>
+      </header>
 
-      <input
-        type="text"
-        placeholder="Type du bien"
-        value={type}
-        onChange={(e) => setType(e.target.value)}
-      />
+      <h2>{idModification === null ? "Ajouter un bien" : "Modifier le bien"}</h2>
+      <div className={"form-card" + (idModification !== null ? " editing" : "")}>
+        <div className="field">
+          <label htmlFor="adresse">Adresse</label>
+          <input
+            id="adresse"
+            type="text"
+            placeholder="Adresse du bien"
+            value={adresse}
+            onChange={(e) => setAdresse(e.target.value)}
+          />
+        </div>
 
-      <button onClick={ajouterBien}>Ajouter</button>
-      <ul className="liste-biens">
+        <div className="field">
+          <label htmlFor="type">Type</label>
+          <input
+            id="type"
+            type="text"
+            placeholder="Type du bien"
+            value={type}
+            onChange={(e) => setType(e.target.value)}
+          />
+        </div>
+
+        <button onClick={ajouterBien}>
+          {idModification === null ? "Ajouter" : "Enregistrer"}
+        </button>
+      </div>
+
+      <ul className="item-list liste-biens">
         {biens.map((bien) => (
-          <li key={bien.idBien} className="bien-item">
-            <span>
-              {bien.adresse} - {bien.type}
-            </span>
+          <li key={bien.idBien} className="item bien-item">
+            <div className="item-main">
+              <strong>{bien.adresse}</strong>
+              <span>{bien.type}</span>
+            </div>
 
-            <button onClick={() => modifierBien(bien)}>Modifier</button>
+            <div className="item-actions">
+              <button className="btn-secondary" onClick={() => modifierBien(bien)}>
+                Modifier
+              </button>
 
-            <button onClick={() => supprimerBien(bien.idBien)}>
-              Supprimer
-            </button>
+              <button className="btn-danger" onClick={() => supprimerBien(bien.idBien)}>
+                Supprimer
+              </button>
+            </div>
           </li>
         ))}
       </ul>
+      {biens.length === 0 && <p className="empty">Aucun bien pour le moment.</p>}
     </div>
   );
 }

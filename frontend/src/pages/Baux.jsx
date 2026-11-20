@@ -25,6 +25,7 @@ function Baux() {
   const [idBien, setIdBien] = useState("");
   const [idLocataire, setIdLocataire] = useState("");
   const [idModification, setIdModification] = useState(null);
+
   function ajouterBail() {
     if (!dateDebut || !dateFin || !montantLoyer || !idBien || !idLocataire) {
       alert("Veuillez remplir tous les champs");
@@ -66,6 +67,7 @@ function Baux() {
     setIdBien("");
     setIdLocataire("");
   }
+
   function modifierBail(bail) {
     setIdModification(bail.idBail);
 
@@ -75,6 +77,7 @@ function Baux() {
     setIdBien(bail.idBien);
     setIdLocataire(bail.idLocataire);
   }
+
   function supprimerBail(id) {
     const nouveauxBaux = baux.filter((bail) => bail.idBail !== id);
 
@@ -83,42 +86,69 @@ function Baux() {
 
   return (
     <div>
-      <h1>Gestion des baux</h1>
-      <h2>Ajouter un bail</h2>
+      <header className="page-head">
+        <h1>Gestion des baux</h1>
+        <p>Les contrats qui lient un bien à un locataire.</p>
+      </header>
 
-      <div className="formulaire-bail">
-        <input
-          type="date"
-          value={dateDebut}
-          onChange={(e) => setDateDebut(e.target.value)}
-        />
+      <h2>{idModification === null ? "Ajouter un bail" : "Modifier le bail"}</h2>
+      <div
+        className={
+          "form-card formulaire-bail" + (idModification !== null ? " editing" : "")
+        }
+      >
+        <div className="field">
+          <label htmlFor="dateDebut">Date de début</label>
+          <input
+            id="dateDebut"
+            type="date"
+            value={dateDebut}
+            onChange={(e) => setDateDebut(e.target.value)}
+          />
+        </div>
 
-        <input
-          type="date"
-          value={dateFin}
-          onChange={(e) => setDateFin(e.target.value)}
-        />
+        <div className="field">
+          <label htmlFor="dateFin">Date de fin</label>
+          <input
+            id="dateFin"
+            type="date"
+            value={dateFin}
+            onChange={(e) => setDateFin(e.target.value)}
+          />
+        </div>
 
-        <input
-          type="number"
-          placeholder="Montant du loyer (DH)"
-          value={montantLoyer}
-          onChange={(e) => setMontantLoyer(e.target.value)}
-        />
+        <div className="field">
+          <label htmlFor="montantLoyer">Loyer (DH)</label>
+          <input
+            id="montantLoyer"
+            type="number"
+            placeholder="Montant du loyer (DH)"
+            value={montantLoyer}
+            onChange={(e) => setMontantLoyer(e.target.value)}
+          />
+        </div>
 
-        <input
-          type="number"
-          placeholder="ID du bien"
-          value={idBien}
-          onChange={(e) => setIdBien(e.target.value)}
-        />
+        <div className="field">
+          <label htmlFor="idBien">N° du bien</label>
+          <input
+            id="idBien"
+            type="number"
+            placeholder="ID du bien"
+            value={idBien}
+            onChange={(e) => setIdBien(e.target.value)}
+          />
+        </div>
 
-        <input
-          type="number"
-          placeholder="ID du locataire"
-          value={idLocataire}
-          onChange={(e) => setIdLocataire(e.target.value)}
-        />
+        <div className="field">
+          <label htmlFor="idLocataire">N° du locataire</label>
+          <input
+            id="idLocataire"
+            type="number"
+            placeholder="ID du locataire"
+            value={idLocataire}
+            onChange={(e) => setIdLocataire(e.target.value)}
+          />
+        </div>
 
         <button onClick={ajouterBail}>
           {idModification === null
@@ -126,21 +156,29 @@ function Baux() {
             : "Enregistrer les modifications"}
         </button>
       </div>
-      <ul>
+
+      <ul className="item-list">
         {baux.map((bail) => (
-          <li key={bail.idBail}>
-            Bail N° {bail.idBail} - Début : {bail.dateDebut} - Fin :{" "}
-            {bail.dateFin} - Loyer : {bail.montantLoyer} DH
-            <div className="actions-bail">
-              <button
-                className="btn-modifier"
-                onClick={() => modifierBail(bail)}
-              >
+          <li key={bail.idBail} className="item">
+            <div className="item-main">
+              <strong>Bail N° {bail.idBail}</strong>
+              <span>
+                Du {bail.dateDebut} au {bail.dateFin}
+              </span>
+              <span>
+                Bien n° {bail.idBien}, locataire n° {bail.idLocataire}
+              </span>
+            </div>
+
+            <span className="item-amount">{bail.montantLoyer} DH</span>
+
+            <div className="item-actions actions-bail">
+              <button className="btn-secondary" onClick={() => modifierBail(bail)}>
                 Modifier
               </button>
 
               <button
-                className="btn-supprimer"
+                className="btn-danger"
                 onClick={() => supprimerBail(bail.idBail)}
               >
                 Supprimer
@@ -149,8 +187,10 @@ function Baux() {
           </li>
         ))}
       </ul>
+      {baux.length === 0 && <p className="empty">Aucun bail pour le moment.</p>}
     </div>
   );
 }
 
 export default Baux;
+

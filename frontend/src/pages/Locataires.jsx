@@ -25,7 +25,8 @@ function Locataires() {
   const [prenom, setPrenom] = useState("");
   const [telephone, setTelephone] = useState("");
   const [idModification, setIdModification] = useState(null);
-  function ajouterLocataire(locataire) {
+
+  function ajouterLocataire() {
     if (idModification === null) {
       const nouveauLocataire = {
         idLocataire: locataires.length + 1,
@@ -57,6 +58,7 @@ function Locataires() {
     setPrenom("");
     setTelephone("");
   }
+
   function modifierLocataire(locataire) {
     setIdModification(locataire.idLocataire);
 
@@ -64,6 +66,7 @@ function Locataires() {
     setPrenom(locataire.prenom);
     setTelephone(locataire.telephone);
   }
+
   function supprimerLocataire(id) {
     const nouveauxLocataires = locataires.filter((locataire) => {
       return locataire.idLocataire !== id;
@@ -71,48 +74,87 @@ function Locataires() {
 
     setLocataires(nouveauxLocataires);
   }
+
   return (
     <div>
-      <h1>Gestion des locataires</h1>
-      <input
-        type="text"
-        placeholder="Nom"
-        value={nom}
-        onChange={(e) => setNom(e.target.value)}
-      />
+      <header className="page-head">
+        <h1>Gestion des locataires</h1>
+        <p>Les personnes qui occupent vos biens.</p>
+      </header>
 
-      <input
-        type="text"
-        placeholder="Prénom"
-        value={prenom}
-        onChange={(e) => setPrenom(e.target.value)}
-      />
+      <h2>
+        {idModification === null ? "Ajouter un locataire" : "Modifier le locataire"}
+      </h2>
+      <div className={"form-card" + (idModification !== null ? " editing" : "")}>
+        <div className="field">
+          <label htmlFor="nom">Nom</label>
+          <input
+            id="nom"
+            type="text"
+            placeholder="Nom"
+            value={nom}
+            onChange={(e) => setNom(e.target.value)}
+          />
+        </div>
 
-      <input
-        type="text"
-        placeholder="Téléphone"
-        value={telephone}
-        onChange={(e) => setTelephone(e.target.value)}
-      />
+        <div className="field">
+          <label htmlFor="prenom">Prénom</label>
+          <input
+            id="prenom"
+            type="text"
+            placeholder="Prénom"
+            value={prenom}
+            onChange={(e) => setPrenom(e.target.value)}
+          />
+        </div>
 
-      <button onClick={ajouterLocataire}>Ajouter</button>
-      <ul className="liste-locataires">
+        <div className="field">
+          <label htmlFor="telephone">Téléphone</label>
+          <input
+            id="telephone"
+            type="text"
+            placeholder="Téléphone"
+            value={telephone}
+            onChange={(e) => setTelephone(e.target.value)}
+          />
+        </div>
+
+        <button onClick={ajouterLocataire}>
+          {idModification === null ? "Ajouter" : "Enregistrer"}
+        </button>
+      </div>
+
+      <ul className="item-list liste-locataires">
         {locataires.map((locataire) => (
-          <li key={locataire.idLocataire} className="locataire-item">
-            <span>
-              {locataire.nom} {locataire.prenom} - {locataire.telephone}
-            </span>
+          <li key={locataire.idLocataire} className="item locataire-item">
+            <div className="item-main">
+              <strong>
+                {locataire.nom} {locataire.prenom}
+              </strong>
+              <span>{locataire.telephone}</span>
+            </div>
 
-            <button onClick={() => modifierLocataire(locataire)}>
-              Modifier
-            </button>
+            <div className="item-actions">
+              <button
+                className="btn-secondary"
+                onClick={() => modifierLocataire(locataire)}
+              >
+                Modifier
+              </button>
 
-            <button onClick={() => supprimerLocataire(locataire.idLocataire)}>
-              Supprimer
-            </button>
+              <button
+                className="btn-danger"
+                onClick={() => supprimerLocataire(locataire.idLocataire)}
+              >
+                Supprimer
+              </button>
+            </div>
           </li>
         ))}
       </ul>
+      {locataires.length === 0 && (
+        <p className="empty">Aucun locataire pour le moment.</p>
+      )}
     </div>
   );
 }
