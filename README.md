@@ -1,70 +1,118 @@
-# Getting Started with Create React App
+# 🏠 Gestion locative
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Présentation du projet
 
-## Available Scripts
+**Gestion locative** est une application web conçue pour faciliter la gestion des biens immobiliers mis en location.
 
-In the project directory, you can run:
+Elle permet de centraliser les informations relatives aux biens, aux locataires, aux baux, aux loyers et aux quittances dans une seule plateforme.
 
-### `npm start`
+Ce projet est réalisé dans le cadre du module **Programmation Web Dynamique**.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Objectifs
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- Simplifier la gestion des biens immobiliers.
+- Organiser les informations des locataires.
+- Assurer le suivi des baux et des loyers.
+- Faciliter la consultation des quittances.
+- Proposer des espaces adaptés aux différents utilisateurs.
 
-### `npm test`
+## Fonctionnalités
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Gestionnaire
+- Consulter le tableau de bord.
+- Ajouter, modifier et supprimer des biens.
+- Gérer les locataires.
+- Gérer les baux.
+- Gérer les loyers et suivre leur état de paiement.
+- Consulter les quittances.
 
-### `npm run build`
+### Locataire
+- Se connecter à son espace personnel.
+- Consulter ses loyers.
+- Consulter ses quittances.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Technologies utilisées
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+| Technologie | Utilisation |
+|---|---|
+| React.js | Développement du frontend |
+| JavaScript | Logique de l'application |
+| CSS | Mise en forme et design |
+| Laravel | Backend prévu |
+| MySQL | Base de données prévue |
+| Docker | Conteneurisation et environnement de développement |
+| Git et GitHub | Gestion des versions du projet |
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Structure du projet
 
-### `npm run eject`
+```text
+gestion-locative/
+│
+├── frontend/
+│   ├── public/
+│   ├── src/
+│   │   ├── components/
+│   │   ├── data/
+│   │   ├── pages/
+│   │   ├── App.js
+│   │   └── App.css
+│   ├── package.json
+│   └── Dockerfile
+│
+├── compose.yaml
+└── README.md
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Installation et lancement
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Prérequis
+- Node.js
+- npm
+- Git
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Lancer le frontend
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+1. Cloner le dépôt :
 
-## Learn More
+```bash
+git clone https://github.com/ouzlimmalak-arch/gestion-locative.git
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+2. Accéder au dossier frontend :
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```bash
+cd gestion-locative/frontend
+```
 
-### Code Splitting
+3. Installer les dépendances :
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```bash
+npm install
+```
 
-### Analyzing the Bundle Size
+4. Démarrer l'application :
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+```bash
+npm start
+```
 
-### Making a Progressive Web App
+5. Ouvrir le navigateur à l'adresse :
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+```text
+http://localhost:3000
+```
 
-### Advanced Configuration
+## État d'avancement
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+- [x] Création de l'interface frontend avec React.
+- [x] Mise en place de l'authentification et des rôles.
+- [x] Développement des pages de gestion.
+- [x] Gestion des opérations d'ajout, de modification et de suppression.
+- [x] Configuration initiale de Docker.
+- [ ] Développement du backend avec Laravel.
+- [ ] Connexion à la base de données MySQL.
+- [ ] Communication entre le frontend et le backend.
 
-### Deployment
+## Auteur
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Projet réalisé individuellement dans le cadre du module Programmation Web Dynamique.
