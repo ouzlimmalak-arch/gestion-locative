@@ -10,10 +10,12 @@ use App\Http\Controllers\Api\AuthController;
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
-Route::apiResource('biens', BienController::class);
-Route::apiResource('locataires', LocataireController::class);
-Route::apiResource('bails', BailController::class);
-Route::apiResource('quittances', QuittanceController::class);
+Route::middleware('auth:sanctum')->group(function () {
+    Route::apiResource('biens', BienController::class);
+    Route::apiResource('locataires', LocataireController::class);
+    Route::apiResource('bails', BailController::class);
+    Route::apiResource('quittances', QuittanceController::class);
+});
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
