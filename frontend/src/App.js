@@ -6,12 +6,12 @@ import {
   NavLink,
   Navigate,
 } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { getQuittances } from "./services/api";
 
 import Dashboard from "./pages/Dashboard";
 import Biens from "./pages/Biens";
 import Locataires from "./pages/Locataires";
-import Loyers from "./pages/Loyers";
 import Quittances from "./pages/Quittances";
 import Baux from "./pages/Baux";
 import Connexion from "./pages/Connexion";
@@ -21,33 +21,20 @@ function App() {
   const [connecte, setConnecte] = useState(false);
   const [role, setRole] = useState("");
   const [utilisateurConnecte, setUtilisateurConnecte] = useState(null);
+  const [quittances, setQuittances] = useState([]);
+  useEffect(() => {
+    if (connecte) {
+      const token = localStorage.getItem("token");
 
-  const [loyers, setLoyers] = useState([
-    {
-      idLoyer: 1,
-      locataire: "Youssef Amrani",
-      bien: "Agadir, Talborjt",
-      mois: "Octobre 2026",
-      montant: 3500,
-      paye: true,
-    },
-    {
-      idLoyer: 2,
-      locataire: "Salma Benali",
-      bien: "Agadir, Hay Mohammadi",
-      mois: "Octobre 2026",
-      montant: 2200,
-      paye: false,
-    },
-    {
-      idLoyer: 3,
-      locataire: "Karim Oujdi",
-      bien: "Agadir, Founty",
-      mois: "Octobre 2026",
-      montant: 6000,
-      paye: true,
-    },
-  ]);
+      getQuittances(token)
+        .then((data) => {
+          setQuittances(data);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  }, [connecte]);
 
   const deconnecter = () => {
     setConnecte(false);
@@ -74,7 +61,6 @@ function App() {
               </>
             )}
 
-            <NavLink to="/loyers">Loyers</NavLink>
             <NavLink to="/quittances">Quittances</NavLink>
           </div>
 
@@ -96,6 +82,7 @@ function App() {
                   onConnexion={(roleUtilisateur, utilisateur) => {
                     setRole(roleUtilisateur);
                     setUtilisateurConnecte(utilisateur);
+                    localStorage.setItem("token", utilisateur.token);
                     setConnecte(true);
                   }}
                 />
@@ -106,50 +93,8 @@ function App() {
           <Route
             path="/"
             element={
-              connecte ? <Dashboard /> : <Navigate to="/connexion" replace />
-            }
-          />
-
-          <Route
-            path="/biens"
-            element={
-              connecte && role === "Gestionnaire" ? (
-                <Biens />
-              ) : (
-                <Navigate to="/" replace />
-              )
-            }
-          />
-
-          <Route
-            path="/locataires"
-            element={
-              connecte && role === "Gestionnaire" ? (
-                <Locataires />
-              ) : (
-                <Navigate to="/" replace />
-              )
-            }
-          />
-
-          <Route
-            path="/baux"
-            element={
-              connecte && role === "Gestionnaire" ? (
-                <Baux />
-              ) : (
-                <Navigate to="/" replace />
-              )
-            }
-          />
-
-          <Route
-            path="/loyers"
-            element={
               connecte ? (
-                <Loyers
-                  loyers={loyers}
-                  setLoyers={setLoyers}
+                <Dashboard
                   role={role}
                   utilisateurConnecte={utilisateurConnecte}
                 />
@@ -160,13 +105,47 @@ function App() {
           />
 
           <Route
+            path="/biens"
+            element={
+              connecte && role === "Gestionnaire" ? (
+                <Biens utilisateurConnecte={utilisateurConnecte} />
+              ) : (
+                <Navigate to="/" replace />
+              )
+            }
+          />
+
+          <Route
+            path="/locataires"
+            element={
+              connecte && role === "Gestionnaire" ? (
+                <Locataires utilisateurConnecte={utilisateurConnecte} />
+              ) : (
+                <Navigate to="/" replace />
+              )
+            }
+          />
+
+          <Route
+            path="/baux"
+            element={
+              connecte && role === "Gestionnaire" ? (
+                <Baux utilisateurConnecte={utilisateurConnecte} />
+              ) : (
+                <Navigate to="/" replace />
+              )
+            }
+          />
+
+          <Route
             path="/quittances"
             element={
               connecte ? (
                 <Quittances
-                  loyers={loyers}
                   role={role}
                   utilisateurConnecte={utilisateurConnecte}
+                  quittances={quittances}
+                  setQuittances={setQuittances}
                 />
               ) : (
                 <Navigate to="/connexion" replace />

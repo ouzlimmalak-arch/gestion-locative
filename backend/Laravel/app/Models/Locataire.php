@@ -11,4 +11,9 @@ class Locataire extends Model
         'prenom',
         'telephone'
     ];
+
+    public function bails()
+    {
+        return $this->hasMany(Bail::class);
+    }
 }

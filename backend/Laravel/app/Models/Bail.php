@@ -13,4 +13,19 @@ class Bail extends Model
         'bien_id',
         'locataire_id'
     ];
+
+    public function locataire()
+    {
+        return $this->belongsTo(Locataire::class);
+    }
+
+    public function bien()
+    {
+        return $this->belongsTo(Bien::class);
+    }
+
+    public function quittances()
+    {
+        return $this->hasMany(Quittance::class);
+    }
 }

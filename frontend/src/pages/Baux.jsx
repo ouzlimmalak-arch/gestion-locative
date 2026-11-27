@@ -1,64 +1,83 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import {
+  getBaux,
+  ajouterBailAPI,
+  modifierBailAPI,
+  supprimerBailAPI,
+} from "../services/api";
 
-function Baux() {
-  const [baux, setBaux] = useState([
-    {
-      idBail: 1,
-      dateDebut: "2026-01-01",
-      dateFin: "2026-12-31",
-      montantLoyer: 2500,
-      idBien: 1,
-      idLocataire: 1,
-    },
-    {
-      idBail: 2,
-      dateDebut: "2026-02-01",
-      dateFin: "2027-01-31",
-      montantLoyer: 3000,
-      idBien: 2,
-      idLocataire: 2,
-    },
-  ]);
+function Baux({ utilisateurConnecte }) {
+  const [baux, setBaux] = useState([]);
   const [dateDebut, setDateDebut] = useState("");
   const [dateFin, setDateFin] = useState("");
   const [montantLoyer, setMontantLoyer] = useState("");
   const [idBien, setIdBien] = useState("");
   const [idLocataire, setIdLocataire] = useState("");
   const [idModification, setIdModification] = useState(null);
-
-  function ajouterBail() {
-    if (!dateDebut || !dateFin || !montantLoyer || !idBien || !idLocataire) {
-      alert("Veuillez remplir tous les champs");
-      return;
+  useEffect(() => {
+  const chargerBaux = async () => {
+    try {
+      const data = await getBaux(utilisateurConnecte.token);
+      setBaux(
+  data.map((bail) => ({
+    ...bail,
+    idBail: bail.id,
+    idBien: bail.bien_id,
+    idLocataire: bail.locataire_id,
+  }))
+);
+    } catch (error) {
+      alert("Erreur lors du chargement des baux");
     }
+  };
 
-    if (idModification === null) {
-      const nouveauBail = {
-        idBail: baux.length + 1,
-        dateDebut: dateDebut,
-        dateFin: dateFin,
-        montantLoyer: Number(montantLoyer),
-        idBien: Number(idBien),
-        idLocataire: Number(idLocataire),
-      };
+  chargerBaux();
+}, [utilisateurConnecte]);
 
-      setBaux([...baux, nouveauBail]);
-    } else {
-      const nouveauxBaux = baux.map((bail) =>
-        bail.idBail === idModification
-          ? {
-              ...bail,
-              dateDebut: dateDebut,
-              dateFin: dateFin,
-              montantLoyer: Number(montantLoyer),
-              idBien: Number(idBien),
-              idLocataire: Number(idLocataire),
-            }
-          : bail,
+  const ajouterBail = async () => {
+  try {
+    const nouveauBail = {
+      dateDebut,
+      dateFin,
+      montantLoyer,
+      idBien,
+      idLocataire,
+    };
+
+    if (idModification !== null) {
+      const bailModifie = await modifierBailAPI(
+        idModification,
+        nouveauBail,
+        utilisateurConnecte.token
       );
 
-      setBaux(nouveauxBaux);
-      setIdModification(null);
+      setBaux(
+        baux.map((bail) =>
+          bail.idBail === idModification
+            ? {
+                ...bailModifie,
+                idBail: bailModifie.id,
+                idBien: bailModifie.bien_id,
+                idLocataire: bailModifie.locataire_id,
+              }
+            : bail
+        )
+      );
+    } else {
+      const bailAjoute = await ajouterBailAPI(
+        nouveauBail,
+        utilisateurConnecte.token
+      );
+
+      setBaux([
+        ...baux,
+        {
+          ...bailAjoute,
+          idBail: bailAjoute.id,
+          idBien: bailAjoute.bien_id,
+          idLocataire: bailAjoute.locataire_id,
+        },
+      ]);
     }
 
     setDateDebut("");
@@ -66,7 +85,11 @@ function Baux() {
     setMontantLoyer("");
     setIdBien("");
     setIdLocataire("");
+    setIdModification(null);
+  } catch (error) {
+    alert("Erreur lors de l'enregistrement du bail");
   }
+};
 
   function modifierBail(bail) {
     setIdModification(bail.idBail);
@@ -78,11 +101,15 @@ function Baux() {
     setIdLocataire(bail.idLocataire);
   }
 
-  function supprimerBail(id) {
-    const nouveauxBaux = baux.filter((bail) => bail.idBail !== id);
+  const supprimerBail = async (id) => {
+  try {
+    await supprimerBailAPI(id, utilisateurConnecte.token);
 
-    setBaux(nouveauxBaux);
+    setBaux(baux.filter((bail) => bail.idBail !== id));
+  } catch (error) {
+    alert("Erreur lors de la suppression du bail");
   }
+};
 
   return (
     <div>

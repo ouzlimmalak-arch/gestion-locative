@@ -11,4 +11,9 @@ class Quittance extends Model
         'montant',
         'bail_id'
     ];
+
+    public function bail()
+    {
+        return $this->belongsTo(Bail::class);
+    }
 }

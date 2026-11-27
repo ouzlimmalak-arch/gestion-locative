@@ -10,12 +10,13 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    public function register(Request $request)
+public function register(Request $request)
 {
     $validator = Validator::make($request->all(), [
         'name' => 'required|string',
         'email' => 'required|email|unique:users',
         'password' => 'required|string|min:8',
+        'role' => 'required|in:Locataire,Gestionnaire',
     ]);
 
     if ($validator->fails()) {
@@ -26,6 +27,7 @@ class AuthController extends Controller
         'name' => $request->name,
         'email' => $request->email,
         'password' => $request->password,
+        'role' => $request->role,
     ]);
 
     return response()->json($user, 201);

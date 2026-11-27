@@ -13,7 +13,7 @@ Route::get('/user', function (Request $request) {
 Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('biens', BienController::class);
     Route::apiResource('locataires', LocataireController::class);
-    Route::apiResource('bails', BailController::class);
+    Route::apiResource('baux', BailController::class);
     Route::apiResource('quittances', QuittanceController::class);
 });
 Route::post('/register', [AuthController::class, 'register']);

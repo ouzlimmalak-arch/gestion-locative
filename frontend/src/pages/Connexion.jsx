@@ -1,6 +1,8 @@
 
 import React, { useState } from "react";
 import Logo from "../components/Logo";
+import { login, register } from "../services/api";
+import loginBg from "../images/login-bg.png";
 
 function Connexion({ onConnexion }) {
   const [mode, setMode] = useState("connexion");
@@ -18,7 +20,7 @@ function Connexion({ onConnexion }) {
     role: "Locataire",
   });
 
-  const [utilisateurInscrit, setUtilisateurInscrit] = useState(null);
+  
 
   // Modifier les champs de connexion
   const handleChange = (e) => {
@@ -36,41 +38,37 @@ function Connexion({ onConnexion }) {
     });
   };
 
-  // Connexion
-  const handleConnexion = (e) => {
-    e.preventDefault();
+  const handleConnexion = async (e) => {
+  e.preventDefault();
 
-    if (
-      form.email === "gestionnaire@gmail.com" &&
-      form.motDePasse === "1234"
-    ) {
-      onConnexion("Gestionnaire");
-    } else if (
-      utilisateurInscrit &&
-      form.email === utilisateurInscrit.email &&
-      form.motDePasse === utilisateurInscrit.motDePasse
-    ) {
-      onConnexion(utilisateurInscrit.role, utilisateurInscrit);
-    } else {
-      alert("Email ou mot de passe incorrect !");
-    }
-  };
+  try {
+    const data = await login(form.email, form.motDePasse);
 
-  // Inscription
-  const handleInscription = (e) => {
-    e.preventDefault();
-
-    if (inscription.motDePasse !== inscription.confirmation) {
-      alert("Les mots de passe ne correspondent pas !");
-      return;
-    }
-
-    setUtilisateurInscrit({
-      nom: inscription.nom,
-      email: inscription.email,
-      motDePasse: inscription.motDePasse,
-      role: inscription.role,
+    onConnexion(data.user.role, {
+      ...data.user,
+      token: data.token,
     });
+  } catch (error) {
+    alert("Email ou mot de passe incorrect !");
+  }
+};
+
+  
+  const handleInscription = async (e) => {
+  e.preventDefault();
+
+  if (inscription.motDePasse !== inscription.confirmation) {
+    alert("Les mots de passe ne correspondent pas !");
+    return;
+  }
+
+  try {
+    await register(
+      inscription.nom,
+      inscription.email,
+      inscription.motDePasse,
+      inscription.role
+    );
 
     setForm({
       email: inscription.email,
@@ -80,13 +78,19 @@ function Connexion({ onConnexion }) {
     setMode("connexion");
 
     alert("Inscription réussie ! Vous pouvez vous connecter.");
-  };
+  } catch (error) {
+    alert("Erreur lors de l'inscription. Vérifiez vos informations.");
+  }
+ };
 
   return (
     <div className="auth">
 
       {/* Partie gauche */}
-      <aside className="auth-brand">
+      <aside
+  className="auth-brand"
+  style={{ backgroundImage: `url(${loginBg})` }}
+>
         <div className="brand-content">
           <span className="brand-label">
             VOTRE ESPACE IMMOBILIER

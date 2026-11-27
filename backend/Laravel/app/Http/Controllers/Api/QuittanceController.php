@@ -9,11 +9,11 @@ use Illuminate\Support\Facades\Validator;
 
 class QuittanceController extends Controller
 {
-    public function index()
-    {
-        $quittances = Quittance::all();
-        return response()->json($quittances);
-    }
+   public function index()
+{
+    $quittances = Quittance::with('bail.locataire', 'bail.bien')->get();
+    return response()->json($quittances, 201);
+}
 
     public function store(Request $request)
     {
@@ -32,6 +32,8 @@ class QuittanceController extends Controller
             'montant' => $request->montant,
             'bail_id' => $request->bail_id,
         ]);
+
+        $quittance->load('bail.locataire', 'bail.bien');
 
         return response()->json($quittance, 201);
     }

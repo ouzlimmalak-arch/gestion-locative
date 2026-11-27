@@ -1,130 +1,83 @@
-
 import { biens, locataires } from "../data/mockData";
+import { Link } from "react-router-dom";
 
-export default function Dashboard({
-  role,
-  utilisateurConnecte,
-  loyers = [],
-}) {
-  // Vérifier que loyers est bien un tableau
-  const listeLoyers = Array.isArray(loyers) ? loyers : [];
-
-  // Si c'est un locataire, afficher uniquement ses propres loyers
-  const loyersAffiches =
-    role === "Locataire"
-      ? listeLoyers.filter(
-          (l) => l.locataire === utilisateurConnecte?.nom
-        )
-      : listeLoyers;
-
-  // Statistiques du gestionnaire
+export default function Dashboard({ role, utilisateurConnecte }) {
+  console.log("Role actuel :", role);
   const nbBiens = biens.length;
   const nbLocataires = locataires.length;
 
-  const loyersImpayes = listeLoyers.filter((l) => !l.paye);
-
-  const totalEncaisse = listeLoyers
-    .filter((l) => l.paye)
-    .reduce((somme, l) => somme + Number(l.montant || 0), 0);
-
   return (
-    <div>
-      <header className="page-head">
-        <h1>Tableau de bord</h1>
-        <p>
-          {role === "Gestionnaire"
-            ? "La situation de votre parc locatif."
-            : "Bienvenue dans votre espace locataire."}
-        </p>
-      </header>
+    <div className="dashboard">
+      
 
       {role === "Gestionnaire" ? (
         <>
-          <section className="overview">
-            <div className="hero-stat">
-              <span>Total encaissé</span>
-              <strong>
-                {totalEncaisse.toLocaleString("fr-FR")}
-                {" "}
-                <small>MAD</small>
-              </strong>
+          <section className="dashboard-welcome">
+            <div>
+              <h2>Bienvenue dans votre espace de gestion</h2>
+              <p>
+                Gérez facilement vos biens, vos locataires et vos contrats
+                de location.
+              </p>
             </div>
-
-            <ul className="mini-stats">
-              <li>
-                <strong>{nbBiens}</strong> biens
-              </li>
-
-              <li>
-                <strong>{nbLocataires}</strong> locataires
-              </li>
-
-              <li className={loyersImpayes.length > 0 ? "alert" : ""}>
-                <strong>{loyersImpayes.length}</strong>
-                {loyersImpayes.length > 1
-                  ? " loyers impayés"
-                  : " loyer impayé"}
-              </li>
-            </ul>
           </section>
 
-          <h2>Derniers loyers</h2>
+          <section className="dashboard-stats">
+            <div className="stat-card">
+              <span className="stat-icon">⌂</span>
+              <h3>Total des biens</h3>
+              <strong>{nbBiens}</strong>
+              <p>Biens immobiliers</p>
+            </div>
+
+            <div className="stat-card">
+              <span className="stat-icon">♟</span>
+              <h3>Total des locataires</h3>
+              <strong>{nbLocataires}</strong>
+              <p>Locataires enregistrés</p>
+            </div>
+          </section>
+
+          <section className="dashboard-quick">
+            <h2>Accès rapide</h2>
+            <div className="quick-links">
+              <Link to="/biens" className="quick-card">
+                <span className="quick-icon">⌂</span>
+                <h3>Gestion des biens</h3>
+                <p>Consulter et gérer vos biens</p>
+              </Link>
+
+              <Link to="/locataires" className="quick-card">
+                <span className="quick-icon">♟</span>
+                <h3>Gestion des locataires</h3>
+                <p>Consulter vos locataires</p>
+              </Link>
+
+              <Link to="/baux" className="quick-card">
+                <span className="quick-icon">▤</span>
+                <h3>Gestion des baux</h3>
+                <p>Gérer vos contrats de location</p>
+              </Link>
+
+              <Link to="/quittances" className="quick-card">
+                <span className="quick-icon">▧</span>
+                <h3>Quittances</h3>
+                <p>Consulter les quittances</p>
+              </Link>
+            </div>
+          </section>
         </>
       ) : (
-        <h2>Mes loyers</h2>
+        <section className="dashboard-welcome">
+          <div>
+            <h2>Bienvenue dans votre espace locataire</h2>
+            <p>
+              Retrouvez les informations concernant votre location depuis votre
+              espace personnel.
+            </p>
+          </div>
+        </section>
       )}
-
-      <div className="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              {role === "Gestionnaire" && (
-                <>
-                  <th>Locataire</th>
-                  <th>Bien</th>
-                </>
-              )}
-
-              <th>Période</th>
-              <th className="num">Montant</th>
-              <th>Statut</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {loyersAffiches.map((l, i) => (
-              <tr key={l.idLoyer ?? l.id ?? i}>
-                {role === "Gestionnaire" && (
-                  <>
-                    <td>{l.locataire ?? "—"}</td>
-                    <td>{l.bien ?? "—"}</td>
-                  </>
-                )}
-
-                <td>{l.mois ?? "—"}</td>
-
-                <td className="num">
-                  {Number(l.montant || 0).toLocaleString("fr-FR")} MAD
-                </td>
-
-                <td>
-                  <span className={"badge " + (l.paye ? "ok" : "warn")}>
-                    {l.paye ? "Payé" : "Impayé"}
-                  </span>
-                </td>
-              </tr>
-            ))}
-
-            {loyersAffiches.length === 0 && (
-              <tr>
-                <td colSpan={role === "Gestionnaire" ? 5 : 3}>
-                  Aucun loyer à afficher.
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
     </div>
   );
 }
